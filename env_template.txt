@@ -1,0 +1,36 @@
+# ── SUPABASE ──────────────────────────────────────────────
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SERVICE_ROLE_KEY
+
+# ── JWT ────────────────────────────────────────────────────
+# Generate with: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+JWT_SECRET=change_this_to_a_long_random_string_at_least_64_chars
+
+# ── LIVEPAY ────────────────────────────────────────────────
+LIVEPAY_API_KEY=827cb522a62e34b1.264c8c4d129d6e1e53cebb63cc912f472c7e4e3db47d4f69accd9c208981e646
+LIVEPAY_ACCOUNT_NUMBER=LP2604221401
+LIVEPAY_BASE_URL=https://livepay.me/api
+
+# ── CRON SECURITY ──────────────────────────────────────────
+# Generate with: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+CRON_SECRET=generate_a_random_secret_here
+
+# ── ADMIN ──────────────────────────────────────────────────
+# After first deploy: register with ADMIN_WALLET_PHONE, get your user UUID from Supabase,
+# then set it here and redeploy.
+ADMIN_USER_ID=
+ADMIN_WALLET_PHONE=0779710365
+ADMIN_WALLET_NETWORK=MTN
+
+# ── GAME CONFIG ────────────────────────────────────────────
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+REGISTRATION_FEE=10000
+REFERRAL_BONUS=4000
+MIN_STAKE=500
+MAX_STAKE=50000
+ROUND_BETTING_SECONDS=30
+ROUND_LIVE_SECONDS=60
+# Rake taken from EVERY stake at bet placement — guaranteed house profit
+# 10% means user stakes 10,000, house gets 1,000 immediately, 9,000 enters pool
+HOUSE_RAKE_PCT=0.10
