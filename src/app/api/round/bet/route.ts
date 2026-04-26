@@ -72,11 +72,15 @@ export async function POST(req: NextRequest) {
 
   // ── Send rake to admin wallet IMMEDIATELY ─────────────────────────────────
   if (rake > 0 && ADMIN_USER_ID) {
-    await creditWallet(ADMIN_USER_ID, rake, 'ADMIN_CUT', {
-      reference: `RAKE-${round.id}-${session.sub}`,
-      meta: { round_id: round.id, user_id: session.sub, gross_stake: stake, rake_pct: HOUSE_RAKE },
-    }).catch(e => console.error('[bet] Rake transfer failed:', e))
-    // Non-fatal — bet still placed even if admin wallet credit fails (investigate separately)
+    try {
+      await creditWallet(ADMIN_USER_ID, rake, 'ADMIN_CUT', {
+        reference: `RAKE-${round.id}-${session.sub}`,
+        meta: { round_id: round.id, user_id: session.sub, gross_stake: stake, rake_pct: HOUSE_RAKE },
+      })
+    } catch (e) {
+      console.error('[bet] Rake transfer failed:', e)
+      // Non-fatal — bet still placed even if admin wallet credit fails
+    }
   }
 
   // ── Insert bet with net_stake ─────────────────────────────────────────────
@@ -102,20 +106,24 @@ export async function POST(req: NextRequest) {
   }
 
   // ── Update round pool with NET stake only ────────────────────────────────
-  await supabaseAdmin.rpc('increment_round_pool', {
-    p_round_id: round.id, p_amount: netStake, p_direction: direction,
-  }).catch(() => {
-    supabaseAdmin.from('rounds')
-      .select('total_pool,above_pool,below_pool').eq('id', round.id).single()
-      .then(({ data: r }) => {
-        if (!r) return
-        supabaseAdmin.from('rounds').update({
-          total_pool: (r.total_pool ?? 0) + netStake,
-          above_pool: direction === 'ABOVE' ? (r.above_pool ?? 0) + netStake : r.above_pool,
-          below_pool: direction === 'BELOW' ? (r.below_pool ?? 0) + netStake : r.below_pool,
-        }).eq('id', round.id)
-      })
-  })
+  try {
+    await supabaseAdmin.rpc('increment_round_pool', {
+      p_round_id: round.id, p_amount: netStake, p_direction: direction,
+    })
+  } catch {
+    const { data: r } = await supabaseAdmin
+      .from('rounds')
+      .select('total_pool,above_pool,below_pool')
+      .eq('id', round.id)
+      .single()
+    if (r) {
+      await supabaseAdmin.from('rounds').update({
+        total_pool: (r.total_pool ?? 0) + netStake,
+        above_pool: direction === 'ABOVE' ? (r.above_pool ?? 0) + netStake : r.above_pool,
+        below_pool: direction === 'BELOW' ? (r.below_pool ?? 0) + netStake : r.below_pool,
+      }).eq('id', round.id)
+    }
+  }
 
   // Potential payout = net_stake × (advertised multiplier) — indicative only
   // Actual depends on how other bets settle
