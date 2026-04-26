@@ -1534,6 +1534,91 @@ function updateBalanceUI() {
   document.getElementById('wallet-updated').textContent = 'Updated ' + new Date().toLocaleTimeString();
 }
 
+async function checkActivation() {
+  const res = await api('/api/user/kyc');
+  if (!res.ok) return;
+  const { is_activated, national_id_status } = res.data;
+  S.isActivated = is_activated;
+  S.kycStatus = national_id_status;
+  renderActivationBanner(is_activated, national_id_status);
+}
+
+function renderActivationBanner(activated, kycStatus) {
+  const el = document.getElementById('activation-banner');
+  if (!el) return;
+  if (activated) { el.style.display = 'none'; return; }
+
+  const bannerStyles = {
+    NONE: { bg: 'rgba(240,180,41,.06)', border: 'rgba(240,180,41,.3)', color: 'var(--gold)',
+      text: 'Submit National ID to unlock withdrawals.', btn: 'VERIFY NOW' },
+    PENDING: { bg: 'rgba(56,189,248,.06)', border: 'rgba(56,189,248,.3)', color: 'var(--blue)',
+      text: 'Your ID is under review. Withdrawals unlock once approved (1–24hrs).', btn: null },
+    REJECTED: { bg: 'rgba(244,63,94,.06)', border: 'rgba(244,63,94,.3)', color: 'var(--red)',
+      text: 'ID verification rejected. Please resubmit.', btn: 'RESUBMIT' },
+  };
+  const b = bannerStyles[kycStatus] || bannerStyles.NONE;
+  el.style.cssText = `display:block;padding:12px 14px;border:1px solid ${b.border};background:${b.bg};`;
+  el.innerHTML = `
+    <div style="font-family:var(--mono);font-size:10px;color:${b.color};letter-spacing:1px;margin-bottom:6px">
+      ${kycStatus === 'NONE' ? '🔒 WITHDRAWALS LOCKED' : kycStatus === 'PENDING' ? '⏳ UNDER REVIEW' : '❌ REJECTED'}
+    </div>
+    <div style="font-family:var(--body);font-size:13px;color:var(--text2);line-height:1.4">${b.text}</div>
+    ${b.btn ? `<button onclick="openKYC()" style="margin-top:10px;padding:8px 18px;background:${b.color};color:#000;border:none;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:1px;cursor:pointer">${b.btn}</button>` : ''}
+  `;
+}
+
+function openKYC() {
+  if (S.user?.name) document.getElementById('kyc-name').value = S.user.name;
+  document.getElementById('kyc-overlay').classList.add('open');
+}
+function closeKYC() { document.getElementById('kyc-overlay').classList.remove('open'); }
+function closeKYCOuter(e) { if (e.target === document.getElementById('kyc-overlay')) closeKYC(); }
+
+async function submitKYC() {
+  const full_legal_name = document.getElementById('kyc-name').value.trim();
+  const national_id_number = document.getElementById('kyc-nid').value.trim().toUpperCase();
+  const date_of_birth = document.getElementById('kyc-dob').value;
+
+  if (!full_legal_name || !national_id_number || !date_of_birth) {
+    toast('Fill in all fields', 'error'); return;
+  }
+
+  // Age check
+  const dob = new Date(date_of_birth);
+  const age = new Date().getFullYear() - dob.getFullYear() -
+    (new Date() < new Date(new Date().getFullYear(), dob.getMonth(), dob.getDate()) ? 1 : 0);
+  if (age < 18) { toast('You must be 18 or older', 'error'); return; }
+
+  const btn = document.getElementById('kyc-submit');
+  btn.disabled = true; btn.textContent = 'SUBMITTING...';
+
+  try {
+    const res = await api('/api/user/kyc', {
+      method: 'POST',
+      body: JSON.stringify({ full_legal_name, national_id_number, date_of_birth })
+    });
+    if (res.ok) {
+      toast('ID submitted! Review takes 1–24 hours.', 'success');
+      S.kycStatus = 'PENDING';
+      renderActivationBanner(false, 'PENDING');
+      closeKYC();
+    } else {
+      toast(res.error || 'Submission failed', 'error');
+    }
+  } catch { toast('Network error', 'error'); }
+  finally { btn.disabled = false; btn.textContent = 'SUBMIT FOR REVIEW'; }
+}
+
+function openWithdraw() {
+  if (!S.isActivated) {
+    if (S.kycStatus === 'PENDING') {
+      toast('Your ID is under review. Check back in 1–24 hours.', 'info'); return;
+    }
+    openKYC(); return;
+  }
+  openModal('withdraw');
+}
+
 async function loadWallet() {
   // Balance
   const res = await api('/api/wallet/balance');
@@ -1652,90 +1737,7 @@ async function handleModal() {
 // ══════════════════════════════
 //  ACTIVATION / KYC
 // ══════════════════════════════
-async function checkActivation() {
-  const res = await api('/api/user/kyc');
-  if (!res.ok) return;
-  const { is_activated, national_id_status } = res.data;
-  S.isActivated = is_activated;
-  S.kycStatus = national_id_status;
-  renderActivationBanner(is_activated, national_id_status);
-}
 
-function renderActivationBanner(activated, kycStatus) {
-  const el = document.getElementById('activation-banner');
-  if (!el) return;
-  if (activated) { el.style.display = 'none'; return; }
-
-  const bannerStyles = {
-    NONE: { bg: 'rgba(240,180,41,.06)', border: 'rgba(240,180,41,.3)', color: 'var(--gold)',
-      text: 'Submit National ID to unlock withdrawals.', btn: 'VERIFY NOW' },
-    PENDING: { bg: 'rgba(56,189,248,.06)', border: 'rgba(56,189,248,.3)', color: 'var(--blue)',
-      text: 'Your ID is under review. Withdrawals unlock once approved (1–24hrs).', btn: null },
-    REJECTED: { bg: 'rgba(244,63,94,.06)', border: 'rgba(244,63,94,.3)', color: 'var(--red)',
-      text: 'ID verification rejected. Please resubmit.', btn: 'RESUBMIT' },
-  };
-  const b = bannerStyles[kycStatus] || bannerStyles.NONE;
-  el.style.cssText = `display:block;padding:12px 14px;border:1px solid ${b.border};background:${b.bg};`;
-  el.innerHTML = `
-    <div style="font-family:var(--mono);font-size:10px;color:${b.color};letter-spacing:1px;margin-bottom:6px">
-      ${kycStatus === 'NONE' ? '🔒 WITHDRAWALS LOCKED' : kycStatus === 'PENDING' ? '⏳ UNDER REVIEW' : '❌ REJECTED'}
-    </div>
-    <div style="font-family:var(--body);font-size:13px;color:var(--text2);line-height:1.4">${b.text}</div>
-    ${b.btn ? `<button onclick="openKYC()" style="margin-top:10px;padding:8px 18px;background:${b.color};color:#000;border:none;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:1px;cursor:pointer">${b.btn}</button>` : ''}
-  `;
-}
-
-function openKYC() {
-  if (S.user?.name) document.getElementById('kyc-name').value = S.user.name;
-  document.getElementById('kyc-overlay').classList.add('open');
-}
-function closeKYC() { document.getElementById('kyc-overlay').classList.remove('open'); }
-function closeKYCOuter(e) { if (e.target === document.getElementById('kyc-overlay')) closeKYC(); }
-
-async function submitKYC() {
-  const full_legal_name = document.getElementById('kyc-name').value.trim();
-  const national_id_number = document.getElementById('kyc-nid').value.trim().toUpperCase();
-  const date_of_birth = document.getElementById('kyc-dob').value;
-
-  if (!full_legal_name || !national_id_number || !date_of_birth) {
-    toast('Fill in all fields', 'error'); return;
-  }
-
-  // Age check
-  const dob = new Date(date_of_birth);
-  const age = new Date().getFullYear() - dob.getFullYear() -
-    (new Date() < new Date(new Date().getFullYear(), dob.getMonth(), dob.getDate()) ? 1 : 0);
-  if (age < 18) { toast('You must be 18 or older', 'error'); return; }
-
-  const btn = document.getElementById('kyc-submit');
-  btn.disabled = true; btn.textContent = 'SUBMITTING...';
-
-  try {
-    const res = await api('/api/user/kyc', {
-      method: 'POST',
-      body: JSON.stringify({ full_legal_name, national_id_number, date_of_birth })
-    });
-    if (res.ok) {
-      toast('ID submitted! Review takes 1–24 hours.', 'success');
-      S.kycStatus = 'PENDING';
-      renderActivationBanner(false, 'PENDING');
-      closeKYC();
-    } else {
-      toast(res.error || 'Submission failed', 'error');
-    }
-  } catch { toast('Network error', 'error'); }
-  finally { btn.disabled = false; btn.textContent = 'SUBMIT FOR REVIEW'; }
-}
-
-function openWithdraw() {
-  if (!S.isActivated) {
-    if (S.kycStatus === 'PENDING') {
-      toast('Your ID is under review. Check back in 1–24 hours.', 'info'); return;
-    }
-    openKYC(); return;
-  }
-  openModal('withdraw');
-}
   if (!phone) { toast('Enter phone number', 'error'); return; }
 
   const btn = document.getElementById('modal-submit');
