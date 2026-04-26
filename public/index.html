@@ -1507,6 +1507,26 @@ function renderLeaderboard(list) {
 // ══════════════════════════════
 //  WALLET
 // ══════════════════════════════
+const UGX_PER_USD = 3700;
+let S_currency = 'UGX';
+
+function setCurrency(cur) {
+  S_currency = cur;
+  document.getElementById('cur-ugx').style.background = cur === 'UGX' ? 'var(--gold)' : 'transparent';
+  document.getElementById('cur-ugx').style.color = cur === 'UGX' ? '#000' : 'var(--text3)';
+  document.getElementById('cur-usd').style.background = cur === 'USD' ? 'var(--gold)' : 'transparent';
+  document.getElementById('cur-usd').style.color = cur === 'USD' ? '#000' : 'var(--text3)';
+  updateBalanceUI();
+}
+
+function fmtBalance(ugxAmount) {
+  if (S_currency === 'USD') {
+    const usd = ugxAmount / UGX_PER_USD;
+    return 'USD ' + usd.toFixed(2);
+  }
+  return 'UGX ' + ugxAmount.toLocaleString();
+}
+
 function updateBalanceUI() {
   const fmt = fmtBalance(S.balance);
   document.getElementById('tb-balance').textContent = fmt;
@@ -1627,25 +1647,7 @@ async function handleModal() {
 // ══════════════════════════════
 //  CURRENCY TOGGLE (UGX / USD)
 // ══════════════════════════════
-const UGX_PER_USD = 3700;
-let S_currency = 'UGX';
 
-function setCurrency(cur) {
-  S_currency = cur;
-  document.getElementById('cur-ugx').style.background = cur === 'UGX' ? 'var(--gold)' : 'transparent';
-  document.getElementById('cur-ugx').style.color = cur === 'UGX' ? '#000' : 'var(--text3)';
-  document.getElementById('cur-usd').style.background = cur === 'USD' ? 'var(--gold)' : 'transparent';
-  document.getElementById('cur-usd').style.color = cur === 'USD' ? '#000' : 'var(--text3)';
-  updateBalanceUI();
-}
-
-function fmtBalance(ugxAmount) {
-  if (S_currency === 'USD') {
-    const usd = ugxAmount / UGX_PER_USD;
-    return 'USD ' + usd.toFixed(2);
-  }
-  return 'UGX ' + ugxAmount.toLocaleString();
-}
 
 // ══════════════════════════════
 //  ACTIVATION / KYC
