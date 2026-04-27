@@ -1768,6 +1768,23 @@ async function handleModal() {
         updateBalanceUI();
       }
       closeModal();
+      // For deposits: poll balance every 5 seconds for 2 minutes
+      // until it updates (webhook may take a few seconds to fire)
+      if (S.modalMode === 'deposit') {
+        let polls = 0;
+        const prevBalance = S.balance;
+        const pollBalance = setInterval(async () => {
+          polls++;
+          const br = await api('/api/wallet/balance');
+          if (br.ok && br.data.balance !== prevBalance) {
+            S.balance = br.data.balance;
+            updateBalanceUI();
+            toast('✅ Deposit confirmed! Balance updated.', 'success');
+            clearInterval(pollBalance);
+          }
+          if (polls >= 24) clearInterval(pollBalance); // stop after 2 min
+        }, 5000);
+      }
     } else {
       toast(res.error || 'Failed', 'error');
     }
