@@ -861,13 +861,13 @@ body::after{
 
 <!-- ══════════════ KYC / ACTIVATION MODAL ══════════════ -->
 <div class="modal-overlay" id="kyc-overlay" onclick="closeKYCOuter(event)">
-  <div class="modal-sheet" style="border-top-color:var(--blue)">
+  <div class="modal-sheet" style="border-top-color:var(--blue);max-height:90vh;overflow-y:auto">
     <div class="modal-header">
       <div class="modal-title" style="color:var(--blue)">VERIFY YOUR IDENTITY</div>
       <button class="modal-close" onclick="closeKYC()">✕</button>
     </div>
     <div class="modal-hint" style="color:var(--blue);border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.04)">
-      Submit your National ID to unlock withdrawals. You can still play and win during review.
+      Upload front and back of your National ID to unlock withdrawals. Review takes 1–24 hours.
     </div>
     <div class="field">
       <label>FULL LEGAL NAME (as on ID)</label>
@@ -881,6 +881,28 @@ body::after{
       <label>DATE OF BIRTH</label>
       <input type="date" id="kyc-dob"/>
       <div class="field-hint">// you must be 18 or older</div>
+    </div>
+    <div class="field">
+      <label>NATIONAL ID — FRONT PHOTO</label>
+      <div id="kyc-front-preview" style="display:none;margin-bottom:8px">
+        <img id="kyc-front-img" style="width:100%;border:1px solid var(--border2);max-height:160px;object-fit:cover"/>
+      </div>
+      <label style="display:block;padding:20px;border:2px dashed var(--border2);text-align:center;cursor:pointer;background:var(--bg3)" onclick="document.getElementById('kyc-front-input').click()">
+        <div style="font-size:1.5rem;margin-bottom:6px">📷</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text2)" id="kyc-front-label">TAP TO UPLOAD FRONT</div>
+      </label>
+      <input type="file" id="kyc-front-input" accept="image/*" capture="environment" style="display:none" onchange="previewKYC('front', this)"/>
+    </div>
+    <div class="field">
+      <label>NATIONAL ID — BACK PHOTO</label>
+      <div id="kyc-back-preview" style="display:none;margin-bottom:8px">
+        <img id="kyc-back-img" style="width:100%;border:1px solid var(--border2);max-height:160px;object-fit:cover"/>
+      </div>
+      <label style="display:block;padding:20px;border:2px dashed var(--border2);text-align:center;cursor:pointer;background:var(--bg3)" onclick="document.getElementById('kyc-back-input').click()">
+        <div style="font-size:1.5rem;margin-bottom:6px">📷</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text2)" id="kyc-back-label">TAP TO UPLOAD BACK</div>
+      </label>
+      <input type="file" id="kyc-back-input" accept="image/*" capture="environment" style="display:none" onchange="previewKYC('back', this)"/>
     </div>
     <button class="btn-modal" id="kyc-submit" onclick="submitKYC()" style="background:var(--blue);color:#000">SUBMIT FOR REVIEW</button>
   </div>
@@ -1584,6 +1606,25 @@ function renderActivationBanner(activated, kycStatus) {
   `;
 }
 
+// KYC photo data
+const kycPhotos = { front: null, back: null };
+
+function previewKYC(side, input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    kycPhotos[side] = e.target.result; // base64
+    const img = document.getElementById('kyc-' + side + '-img');
+    const preview = document.getElementById('kyc-' + side + '-preview');
+    const label = document.getElementById('kyc-' + side + '-label');
+    img.src = e.target.result;
+    preview.style.display = 'block';
+    label.textContent = '✅ ' + side.toUpperCase() + ' UPLOADED — TAP TO CHANGE';
+  };
+  reader.readAsDataURL(file);
+}
+
 function openKYC() {
   if (S.user?.name) document.getElementById('kyc-name').value = S.user.name;
   document.getElementById('kyc-overlay').classList.add('open');
@@ -1599,6 +1640,8 @@ async function submitKYC() {
   if (!full_legal_name || !national_id_number || !date_of_birth) {
     toast('Fill in all fields', 'error'); return;
   }
+  if (!kycPhotos.front) { toast('Upload front photo of your ID', 'error'); return; }
+  if (!kycPhotos.back) { toast('Upload back photo of your ID', 'error'); return; }
 
   // Age check
   const dob = new Date(date_of_birth);
@@ -1607,12 +1650,18 @@ async function submitKYC() {
   if (age < 18) { toast('You must be 18 or older', 'error'); return; }
 
   const btn = document.getElementById('kyc-submit');
-  btn.disabled = true; btn.textContent = 'SUBMITTING...';
+  btn.disabled = true; btn.textContent = 'UPLOADING...';
 
   try {
     const res = await api('/api/user/kyc', {
       method: 'POST',
-      body: JSON.stringify({ full_legal_name, national_id_number, date_of_birth })
+      body: JSON.stringify({
+        full_legal_name,
+        national_id_number,
+        date_of_birth,
+        id_front: kycPhotos.front,
+        id_back: kycPhotos.back,
+      })
     });
     if (res.ok) {
       toast('ID submitted! Review takes 1–24 hours.', 'success');
