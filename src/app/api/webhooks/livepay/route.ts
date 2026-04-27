@@ -33,12 +33,18 @@ export async function POST(req: NextRequest) {
     return respond(false, 'Invalid JSON', 400)
   }
 
-  // LivePay sends reference as the internal ref we generated
-  const reference = (payload.reference ?? payload.internal_reference ?? payload.ref) as string | undefined
-  const status = (payload.status ?? payload.event) as string | undefined
-  const amount = payload.amount as number | undefined
+  // Log EVERYTHING so we can see exactly what LivePay sends
+  console.log('[webhook/livepay] Full payload:', JSON.stringify(payload))
 
-  if (!reference) {
+  // LivePay may send our reference or their internal_reference
+  const reference = (payload.reference ?? payload.internal_reference ?? payload.ref ?? payload.externalRef ?? payload.external_reference) as string | undefined
+  const livepayRef = (payload.internal_reference ?? payload.livepay_reference ?? payload.transactionId ?? payload.transaction_id) as string | undefined
+  const status = (payload.status ?? payload.event ?? payload.transaction_status) as string | undefined
+  const amount = (payload.amount ?? payload.paid_amount) as number | undefined
+
+  console.log('[webhook/livepay] Extracted:', { reference, livepayRef, status, amount })
+
+  if (!reference && !livepayRef) {
     console.warn('[webhook/livepay] Missing reference in payload:', payload)
     return respond(false, 'Missing reference', 400)
   }
@@ -63,20 +69,36 @@ export async function POST(req: NextRequest) {
       processed: false,
     }, { onConflict: 'reference' })
 
-  // ── Find the matching transaction ──
-  const { data: txn } = await supabaseAdmin
-    .from('transactions')
-    .select('id, user_id, type, amount, status')
-    .eq('reference', reference)
-    .single()
+  // ── Find the matching transaction — try our reference first, then livepay_ref ──
+  let txn: { id: string; user_id: string; type: string; amount: number; status: string } | null = null
+  
+  if (reference) {
+    const { data } = await supabaseAdmin
+      .from('transactions')
+      .select('id, user_id, type, amount, status')
+      .eq('reference', reference)
+      .single()
+    txn = data
+  }
+
+  // Fallback: search by livepay_ref
+  if (!txn && livepayRef) {
+    const { data } = await supabaseAdmin
+      .from('transactions')
+      .select('id, user_id, type, amount, status')
+      .eq('livepay_ref', livepayRef)
+      .single()
+    txn = data
+  }
+
+  console.log('[webhook/livepay] Found txn:', txn?.id ?? 'NONE')
 
   if (!txn) {
-    console.warn('[webhook/livepay] No transaction found for reference:', reference)
-    // Still mark as processed to avoid retry floods
+    console.warn('[webhook/livepay] No transaction found for reference:', reference, 'livepayRef:', livepayRef)
     await supabaseAdmin
       .from('livepay_webhooks')
       .update({ processed: true })
-      .eq('reference', reference)
+      .eq('reference', reference ?? livepayRef ?? 'unknown')
     return respond(true, 'No matching transaction — ignored')
   }
 
