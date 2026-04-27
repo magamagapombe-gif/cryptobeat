@@ -718,21 +718,20 @@ body::after{
 
       <!-- Pool split -->
       <div class="pool-split" id="pool-split-card">
-        <div class="pool-bars">
-          <div class="pool-bar-above" id="pool-bar-above" style="flex:1"></div>
-          <div class="pool-bar-below" id="pool-bar-below" style="flex:1"></div>
-        </div>
-        <div class="pool-labels">
-          <div class="pool-lbl above">
-            <div class="pool-dir">▲ ABOVE</div>
-            <div class="pool-amt" id="pool-above-amt">0 UGX</div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div>
+            <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:3px;margin-bottom:4px">TOTAL POOL</div>
+            <div style="font-family:var(--display);font-size:1.4rem;font-weight:700;color:var(--gold)" id="pool-total">0 UGX</div>
           </div>
-          <div class="pool-lbl below">
-            <div class="pool-dir">▼ BELOW</div>
-            <div class="pool-amt" id="pool-below-amt">0 UGX</div>
+          <div style="text-align:right">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--text3);letter-spacing:3px;margin-bottom:4px">MULTIPLIER</div>
+            <div style="font-family:var(--display);font-size:1.4rem;font-weight:700;color:var(--text)" id="pool-mult">×1.5</div>
           </div>
         </div>
-        <div class="pool-total" id="pool-total">TOTAL POOL: 0 UGX</div>
+        <div style="height:4px;background:var(--border);margin-top:10px;overflow:hidden;border-radius:2px">
+          <div id="pool-bar-fill" style="height:100%;background:var(--gold);width:0%;transition:width .5s"></div>
+        </div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--text3);text-align:center;margin-top:4px" id="pool-players">0 PLAYERS</div>
       </div>
 
       <!-- Bet panel -->
@@ -1297,17 +1296,27 @@ function updateTopbar(round) {
 }
 
 function updatePoolUI(round) {
-  const above = round.above_pool || 0;
-  const below = round.below_pool || 0;
-  const total = above + below || 1;
-  const aboveFlex = Math.max(1, above / total * 100);
-  const belowFlex = Math.max(1, below / total * 100);
+  const total = round.total_pool || 0;
+  const players = round.winner_count || 0;
 
-  document.getElementById('pool-bar-above').style.flex = aboveFlex;
-  document.getElementById('pool-bar-below').style.flex = belowFlex;
-  document.getElementById('pool-above-amt').textContent = ugxShort(above) + ' UGX';
-  document.getElementById('pool-below-amt').textContent = ugxShort(below) + ' UGX';
-  document.getElementById('pool-total').textContent = 'TOTAL POOL: ' + ugxShort(round.total_pool || 0) + ' UGX · MULT ×' + (round.multiplier || S.multiplier);
+  // Total pool display
+  const poolEl = document.getElementById('pool-total');
+  if (poolEl) poolEl.textContent = ugxShort(total) + ' UGX';
+
+  // Multiplier
+  const multEl = document.getElementById('pool-mult');
+  if (multEl) multEl.textContent = '×' + (round.multiplier || S.multiplier);
+
+  // Fill bar based on pool size (visual indicator, max at 100k UGX)
+  const fillEl = document.getElementById('pool-bar-fill');
+  if (fillEl) fillEl.style.width = Math.min(100, (total / 100000) * 100) + '%';
+
+  // Players count (bets placed this round)
+  const playersEl = document.getElementById('pool-players');
+  if (playersEl) {
+    const betCount = (round.above_pool > 0 ? 1 : 0) + (round.below_pool > 0 ? 1 : 0);
+    playersEl.textContent = (round.winner_count || 0) + ' BETS PLACED';
+  }
 
   S.multiplier = round.multiplier || S.multiplier;
   document.getElementById('mult-val').textContent = S.multiplier;
