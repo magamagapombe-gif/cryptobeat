@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -34,18 +34,18 @@ body{
   overflow:hidden;
 }
 
-/* â”€â”€ NOISE TEXTURE â”€â”€ */
+/* ── NOISE TEXTURE ── */
 body::after{
   content:'';position:fixed;inset:0;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
   pointer-events:none;z-index:9998;opacity:0.5;
 }
 
-/* â”€â”€ SCREENS â”€â”€ */
+/* ── SCREENS ── */
 .screen{display:none;flex-direction:column;height:100%;overflow:hidden}
 .screen.active{display:flex}
 
-/* â”€â”€ TOASTS â”€â”€ */
+/* ── TOASTS ── */
 #toasts{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:6px;width:calc(100% - 32px);max-width:380px;pointer-events:none}
 .toast{padding:10px 16px;font-family:var(--mono);font-size:12px;border-radius:2px;letter-spacing:.5px;animation:toastIn .2s ease;pointer-events:none}
 .toast.success{background:#064e3b;border:1px solid var(--green);color:var(--green)}
@@ -53,9 +53,9 @@ body::after{
 .toast.info{background:#0c1a2e;border:1px solid var(--blue);color:var(--blue)}
 @keyframes toastIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════
    LANDING SCREEN
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════ */
 #screen-landing{
   background:var(--bg);
   justify-content:space-between;
@@ -133,9 +133,9 @@ body::after{
 }
 .btn-secondary:active{background:rgba(240,180,41,.07)}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════
    AUTH SCREENS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════ */
 #screen-register,#screen-login{
   background:var(--bg);overflow-y:auto;
 }
@@ -195,9 +195,9 @@ body::after{
 }
 .btn-auth:active{opacity:.85}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   GAME SCREEN â€” MAIN LAYOUT
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ══════════════════════════════════════════════
+   GAME SCREEN — MAIN LAYOUT
+══════════════════════════════════════════════ */
 #screen-game{background:var(--bg)}
 
 /* Top bar */
@@ -248,9 +248,9 @@ body::after{
 .tab-panel::-webkit-scrollbar{display:none}
 .tab-panel.active{display:flex}
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ──────────────────────────────
    TAB 1: PLAY
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+────────────────────────────── */
 .play-panel{padding:12px;gap:10px}
 
 /* BTC price card */
@@ -404,9 +404,9 @@ body::after{
 .result-card.loss .result-title{color:var(--red)}
 .result-detail{font-family:var(--mono);font-size:11px;color:var(--text2)}
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ──────────────────────────────
    TAB 2: LEADERBOARD
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+────────────────────────────── */
 .lb-panel{padding:12px;gap:8px}
 .lb-header{font-family:var(--mono);font-size:10px;color:var(--text3);letter-spacing:3px;padding:4px 0 8px;border-bottom:1px solid var(--border)}
 .lb-item{
@@ -428,9 +428,9 @@ body::after{
 .lb-stake{font-family:var(--mono);font-size:11px;color:var(--text2);flex-shrink:0}
 .lb-empty{font-family:var(--mono);font-size:11px;color:var(--text3);text-align:center;padding:2rem;letter-spacing:1px}
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ──────────────────────────────
    TAB 3: WALLET
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+────────────────────────────── */
 .wallet-panel{padding:12px;gap:10px}
 
 .balance-hero{
@@ -482,9 +482,9 @@ body::after{
 .txn-amount.credit{color:var(--green)}
 .txn-amount.debit{color:var(--red)}
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ──────────────────────────────
    TAB 4: HISTORY
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+────────────────────────────── */
 .hist-panel{padding:12px;gap:8px}
 .hist-item{
   background:var(--bg2);border:1px solid var(--border);
@@ -504,9 +504,9 @@ body::after{
 .hist-detail-val.below{color:var(--red)}
 .hist-empty{font-family:var(--mono);font-size:11px;color:var(--text3);text-align:center;padding:3rem;letter-spacing:1px}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════
    MODALS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════ */
 .modal-overlay{
   display:none;position:fixed;inset:0;
   background:rgba(0,0,0,.85);z-index:200;
@@ -542,9 +542,9 @@ body::after{
 .btn-modal:active{opacity:.85}
 .btn-modal:disabled{background:var(--bg3);color:var(--text3);cursor:not-allowed}
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ══════════════════════════════════════════════
    WIN OVERLAY
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+══════════════════════════════════════════════ */
 #win-overlay{
   display:none;position:fixed;inset:0;
   background:rgba(0,0,0,.92);z-index:300;
@@ -572,7 +572,7 @@ body::after{
 
 <div id="toasts"></div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â• LANDING â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════════ LANDING ══════════════ -->
 <div class="screen active" id="screen-landing">
   <div class="land-top">
     <div class="land-grid"></div>
@@ -582,12 +582,12 @@ body::after{
     <p class="land-sub">Predict if Bitcoin goes up or down. Win real UGX every 90 seconds.</p>
     <div class="land-price-row">
       <div class="live-dot"></div>
-      <div class="land-price-label">BTC / UGX LIVE</div>
-      <div class="land-price-val" id="land-btc-price">â€”</div>
+      <div class="land-price-label">BTC / USDT LIVE</div>
+      <div class="land-price-val" id="land-btc-price">—</div>
       <div class="land-price-chg" id="land-btc-chg"></div>
     </div>
     <div class="land-stats">
-      <div><div class="land-stat-num">Ã—1.8</div><div class="land-stat-label">AVG WIN</div></div>
+      <div><div class="land-stat-num">×1.8</div><div class="land-stat-label">AVG WIN</div></div>
       <div><div class="land-stat-num">90s</div><div class="land-stat-label">ROUNDS</div></div>
       <div><div class="land-stat-num">FREE</div><div class="land-stat-label">TO PLAY</div></div>
     </div>
@@ -598,16 +598,16 @@ body::after{
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â• REGISTER â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════════ REGISTER ══════════════ -->
 <div class="screen" id="screen-register">
   <div class="auth-header">
-    <button class="auth-back" onclick="go('screen-landing')">â†</button>
+    <button class="auth-back" onclick="go('screen-landing')">←</button>
     <span class="auth-title-small">CREATE ACCOUNT</span>
     <span class="auth-switch-top"><a onclick="go('screen-login')">Login</a></span>
   </div>
   <div class="auth-body" id="reg-body">
     <div class="auth-section-title">Join CryptoBeat</div>
-    <div class="auth-section-sub">// FREE TO REGISTER Â· PLAY INSTANTLY</div>
+    <div class="auth-section-sub">// FREE TO REGISTER · PLAY INSTANTLY</div>
     <div class="field">
       <label>FULL NAME</label>
       <input type="text" id="reg-name" placeholder="Your name" autocomplete="name"/>
@@ -639,7 +639,7 @@ body::after{
     </div>
     <div class="fee-card">
       <div class="fee-row"><span class="lbl">Registration</span><span class="val" style="color:var(--green)">FREE</span></div>
-      <div class="fee-row"><span class="lbl">Play &amp; win immediately</span><span class="val">âœ“ Enabled</span></div>
+      <div class="fee-row"><span class="lbl">Play &amp; win immediately</span><span class="val">✓ Enabled</span></div>
       <div class="fee-row total"><span class="lbl">Withdrawals unlock after</span><span class="val">ID verification</span></div>
     </div>
     <button class="btn-auth" onclick="handleRegister()">CREATE ACCOUNT</button>
@@ -647,10 +647,10 @@ body::after{
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â• LOGIN â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════════ LOGIN ══════════════ -->
 <div class="screen" id="screen-login">
   <div class="auth-header">
-    <button class="auth-back" onclick="go('screen-landing')">â†</button>
+    <button class="auth-back" onclick="go('screen-landing')">←</button>
     <span class="auth-title-small">SIGN IN</span>
     <span class="auth-switch-top"><a onclick="go('screen-register')">Register</a></span>
   </div>
@@ -669,7 +669,7 @@ body::after{
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â• GAME â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════════ GAME ══════════════ -->
 <div class="screen" id="screen-game">
   <!-- Top bar -->
   <div class="game-topbar">
@@ -690,12 +690,12 @@ body::after{
       <!-- BTC Price -->
       <div class="btc-card">
         <div class="btc-left">
-          <div class="btc-label-sm">BTC / UGX LIVE</div>
-          <div class="btc-price-big" id="btc-price-display">â€”</div>
+          <div class="btc-label-sm">BTC / USDT LIVE</div>
+          <div class="btc-price-big" id="btc-price-display">—</div>
         </div>
         <div class="btc-right">
-          <div class="btc-change" id="btc-change-display">â€”</div>
-          <div class="btc-locked">LOCK <span id="btc-locked-display">â€”</span></div>
+          <div class="btc-change" id="btc-change-display">—</div>
+          <div class="btc-locked">LOCK <span id="btc-locked-display">—</span></div>
           <svg class="spark" id="spark-svg" viewBox="0 0 90 32" preserveAspectRatio="none">
             <polyline id="spark-line" points="" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/>
           </svg>
@@ -724,11 +724,11 @@ body::after{
         </div>
         <div class="pool-labels">
           <div class="pool-lbl above">
-            <div class="pool-dir">â–² ABOVE</div>
+            <div class="pool-dir">▲ ABOVE</div>
             <div class="pool-amt" id="pool-above-amt">0 UGX</div>
           </div>
           <div class="pool-lbl below">
-            <div class="pool-dir">â–¼ BELOW</div>
+            <div class="pool-dir">▼ BELOW</div>
             <div class="pool-amt" id="pool-below-amt">0 UGX</div>
           </div>
         </div>
@@ -742,11 +742,11 @@ body::after{
         <!-- Direction -->
         <div class="dir-grid" id="dir-grid">
           <button class="dir-btn up" id="btn-above" onclick="selectDir('ABOVE')">
-            <span class="dir-arrow">â–²</span>
+            <span class="dir-arrow">▲</span>
             <span class="dir-label">ABOVE</span>
           </button>
           <button class="dir-btn down" id="btn-below" onclick="selectDir('BELOW')">
-            <span class="dir-arrow">â–¼</span>
+            <span class="dir-arrow">▼</span>
             <span class="dir-label">BELOW</span>
           </button>
         </div>
@@ -769,9 +769,9 @@ body::after{
         <div class="mult-row">
           <div class="mult-left">
             <div class="mult-label">ROUND MULTIPLIER</div>
-            <div class="mult-potential" id="potential-win">Potential win: â€”</div>
+            <div class="mult-potential" id="potential-win">Potential win: —</div>
           </div>
-          <div class="mult-right">Ã—<span id="mult-val">1.5</span></div>
+          <div class="mult-right">×<span id="mult-val">1.5</span></div>
         </div>
 
         <!-- Submit -->
@@ -781,8 +781,8 @@ body::after{
       <!-- Locked bet (shown after bet placed) -->
       <div class="bet-locked-card hidden" id="bet-locked-card">
         <div class="bet-locked-tag">YOUR BET IS LOCKED IN</div>
-        <div class="bet-locked-dir" id="locked-dir-display">â€”</div>
-        <div class="bet-locked-meta" id="locked-meta-display">â€”</div>
+        <div class="bet-locked-dir" id="locked-dir-display">—</div>
+        <div class="bet-locked-meta" id="locked-meta-display">—</div>
       </div>
 
       <!-- Result (shown after resolution) -->
@@ -811,10 +811,10 @@ body::after{
       <div class="balance-hero">
         <div class="balance-label">AVAILABLE BALANCE</div>
         <div class="balance-amount" id="wallet-balance-display">UGX 0</div>
-        <div class="balance-sub" id="wallet-updated">â€”</div>
+        <div class="balance-sub" id="wallet-updated">—</div>
         <div class="wallet-actions">
           <button class="w-btn dep" onclick="openModal('deposit')">+ DEPOSIT</button>
-          <button class="w-btn wit" onclick="openWithdraw()">âˆ’ WITHDRAW</button>
+          <button class="w-btn wit" onclick="openWithdraw()">− WITHDRAW</button>
         </div>
       </div>
 
@@ -846,26 +846,26 @@ body::after{
   <!-- Tab bar -->
   <nav class="tab-bar">
     <button class="tab-btn active" id="tabBtn-play" onclick="switchTab('play')">
-      <span class="tab-icon">âš¡</span>PLAY
+      <span class="tab-icon">⚡</span>PLAY
     </button>
     <button class="tab-btn" id="tabBtn-lb" onclick="switchTab('lb')">
-      <span class="tab-icon">ðŸ†</span>BOARD
+      <span class="tab-icon">🏆</span>BOARD
     </button>
     <button class="tab-btn" id="tabBtn-wallet" onclick="switchTab('wallet')">
-      <span class="tab-icon">ðŸ’³</span>WALLET
+      <span class="tab-icon">💳</span>WALLET
     </button>
     <button class="tab-btn" id="tabBtn-hist" onclick="switchTab('hist')">
-      <span class="tab-icon">ðŸ“‹</span>HISTORY
+      <span class="tab-icon">📋</span>HISTORY
     </button>
   </nav>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â• KYC / ACTIVATION MODAL â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════════ KYC / ACTIVATION MODAL ══════════════ -->
 <div class="modal-overlay" id="kyc-overlay" onclick="closeKYCOuter(event)">
   <div class="modal-sheet" style="border-top-color:var(--blue)">
     <div class="modal-header">
       <div class="modal-title" style="color:var(--blue)">VERIFY YOUR IDENTITY</div>
-      <button class="modal-close" onclick="closeKYC()">âœ•</button>
+      <button class="modal-close" onclick="closeKYC()">✕</button>
     </div>
     <div class="modal-hint" style="color:var(--blue);border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.04)">
       Submit your National ID to unlock withdrawals. You can still play and win during review.
@@ -887,12 +887,12 @@ body::after{
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â• DEPOSIT / WITHDRAW MODAL â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════════ DEPOSIT / WITHDRAW MODAL ══════════════ -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOuter(event)">
   <div class="modal-sheet">
     <div class="modal-header">
       <div class="modal-title" id="modal-title">DEPOSIT FUNDS</div>
-      <button class="modal-close" onclick="closeModal()">âœ•</button>
+      <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-hint" id="modal-hint">A USSD prompt will be sent to your phone. Approve with your Mobile Money PIN.</div>
     <div class="field">
@@ -914,10 +914,10 @@ body::after{
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â• WIN OVERLAY â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ══════════════ WIN OVERLAY ══════════════ -->
 <div id="win-overlay">
   <div class="confetti-wrap" id="confetti-wrap"></div>
-  <div class="win-emoji">ðŸ†</div>
+  <div class="win-emoji">🏆</div>
   <div class="win-title">YOU WON!</div>
   <div class="win-amount" id="win-amount">+UGX 0</div>
   <div class="win-sub">Credited to your wallet</div>
@@ -926,11 +926,13 @@ body::after{
 
 <script>
 'use strict';
+
+// Supabase Edge Function base URL — deposit/withdraw go here to avoid Cloudflare block
 const SUPABASE_FUNCTIONS_URL = 'https://tuycqkbbicefvsxvhpgp.supabase.co/functions/v1';
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  STATE
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 const S = {
   token: localStorage.getItem('cb_token') || null,
   user: null,
@@ -966,11 +968,11 @@ const S = {
   transactions: [],
 };
 
-const API = '';  // same origin â€” Next.js API routes
+const API = '';  // same origin — Next.js API routes
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  NAVIGATION
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 function go(screenId) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(screenId).classList.add('active');
@@ -985,9 +987,9 @@ function switchTab(tab) {
   if (tab === 'hist') renderHistory();
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  TOAST
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 function toast(msg, type = 'info') {
   const c = document.getElementById('toasts');
   const t = document.createElement('div');
@@ -997,11 +999,11 @@ function toast(msg, type = 'info') {
   setTimeout(() => t.remove(), 3500);
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  FORMAT
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 function ugx(n) {
-  if (!n && n !== 0) return 'â€”';
+  if (!n && n !== 0) return '—';
   if (n >= 1_000_000) return 'UGX ' + (n/1_000_000).toFixed(2) + 'M';
   if (n >= 1_000) return 'UGX ' + Math.round(n).toLocaleString();
   return 'UGX ' + n;
@@ -1013,19 +1015,19 @@ function ugxShort(n) {
   return String(n);
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  BTC PRICE (direct, no auth)
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 async function fetchBTCPrice() {
   try {
     const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT', { signal: AbortSignal.timeout(3000) });
     const d = await r.json();
-    return Math.round(parseFloat(d.price) * 3700);
+    return parseFloat(parseFloat(d.price).toFixed(2));
   } catch {
     try {
-      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=ugx', { signal: AbortSignal.timeout(4000) });
+      const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd', { signal: AbortSignal.timeout(4000) });
       const d = await r.json();
-      return Math.round(d.bitcoin.ugx);
+      return parseFloat(d.bitcoin.usd.toFixed(2));
     } catch {
       return S.btcPrice || 0;
     }
@@ -1039,7 +1041,7 @@ function updateBTCUI(price) {
 
   // Landing
   const lp = document.getElementById('land-btc-price');
-  if (lp) { lp.textContent = 'UGX ' + price.toLocaleString(); }
+  if (lp) { lp.textContent = '$' + price.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }
   const lc = document.getElementById('land-btc-chg');
   if (lc) {
     lc.textContent = (up ? '+' : '') + pct + '%';
@@ -1049,13 +1051,13 @@ function updateBTCUI(price) {
   // Game
   const gp = document.getElementById('btc-price-display');
   if (gp) {
-    gp.textContent = 'UGX ' + price.toLocaleString();
+    gp.textContent = '$' + price.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
     gp.style.color = up ? 'var(--green)' : 'var(--red)';
     setTimeout(() => gp.style.color = '', 500);
   }
   const gc = document.getElementById('btc-change-display');
   if (gc) {
-    gc.textContent = (up ? 'â–² +' : 'â–¼ ') + pct + '%';
+    gc.textContent = (up ? '▲ +' : '▼ ') + pct + '%';
     gc.className = 'btc-change ' + (up ? 'price-up' : 'price-down');
   }
 
@@ -1091,9 +1093,9 @@ async function startPricePolling() {
   S.priceInterval = setInterval(update, 5000);
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  AUTHENTICATED API CALLS
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 async function api(path, opts = {}) {
   const headers = { 'Content-Type': 'application/json' };
   if (S.token) headers['Authorization'] = 'Bearer ' + S.token;
@@ -1101,9 +1103,9 @@ async function api(path, opts = {}) {
   return r.json();
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  AUTH
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 async function handleRegister() {
   const name = document.getElementById('reg-name').value.trim();
   const phone = document.getElementById('reg-phone').value.trim();
@@ -1196,9 +1198,9 @@ async function enterGame() {
   startRoundPoll();
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  ROUND POLLING
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 async function pollRound() {
   try {
     const res = await api('/api/round/current');
@@ -1231,7 +1233,7 @@ async function pollRound() {
 
     renderLeaderboard(leaderboard || []);
   } catch (e) {
-    // Silent fail â€” keep polling
+    // Silent fail — keep polling
   }
 }
 
@@ -1240,9 +1242,9 @@ function startRoundPoll() {
   S.pollInterval = setInterval(pollRound, 1000);
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  ROUND UI
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 function updateRoundUI(round, serverTime) {
   const phase = round.phase.toLowerCase();
   const timer = round.seconds_left ?? 0;
@@ -1277,7 +1279,12 @@ function updateRoundUI(round, serverTime) {
   // Locked price
   const lockEl = document.getElementById('btc-locked-display');
   if (lockEl) {
-    lockEl.textContent = round.locked_price ? round.locked_price.toLocaleString() : 'â€”';
+    if (round.locked_price) {
+      const lockUSD = (round.locked_price / 3700).toFixed(2);
+      lockEl.textContent = '$' + parseFloat(lockUSD).toLocaleString('en-US', {minimumFractionDigits:2});
+    } else {
+      lockEl.textContent = '—';
+    }
   }
 
   // Enable/disable bet panel
@@ -1300,7 +1307,7 @@ function updatePoolUI(round) {
   document.getElementById('pool-bar-below').style.flex = belowFlex;
   document.getElementById('pool-above-amt').textContent = ugxShort(above) + ' UGX';
   document.getElementById('pool-below-amt').textContent = ugxShort(below) + ' UGX';
-  document.getElementById('pool-total').textContent = 'TOTAL POOL: ' + ugxShort(round.total_pool || 0) + ' UGX Â· MULT Ã—' + (round.multiplier || S.multiplier);
+  document.getElementById('pool-total').textContent = 'TOTAL POOL: ' + ugxShort(round.total_pool || 0) + ' UGX · MULT ×' + (round.multiplier || S.multiplier);
 
   S.multiplier = round.multiplier || S.multiplier;
   document.getElementById('mult-val').textContent = S.multiplier;
@@ -1313,7 +1320,7 @@ function updateMyBetUI(myBet, round) {
   const resultWrap = document.getElementById('result-card-wrap');
 
   if (!myBet) {
-    // No bet placed â€” show betting UI if in BETTING phase
+    // No bet placed — show betting UI if in BETTING phase
     resultWrap.classList.add('hidden');
     return;
   }
@@ -1326,9 +1333,9 @@ function updateMyBetUI(myBet, round) {
   const metaEl = document.getElementById('locked-meta-display');
 
   if (myBet.result === 'PENDING') {
-    dirEl.textContent = (myBet.direction === 'ABOVE' ? 'â–² ' : 'â–¼ ') + myBet.direction;
+    dirEl.textContent = (myBet.direction === 'ABOVE' ? '▲ ' : '▼ ') + myBet.direction;
     dirEl.className = 'bet-locked-dir ' + myBet.direction.toLowerCase();
-    metaEl.textContent = 'Stake: ' + ugxShort(myBet.stake) + ' UGX Â· Potential: ' + ugxShort(Math.round((myBet.stake||0) * (myBet.multiplier || S.multiplier))) + ' UGX';
+    metaEl.textContent = 'Stake: ' + ugxShort(myBet.stake) + ' UGX · Potential: ' + ugxShort(Math.round((myBet.stake||0) * (myBet.multiplier || S.multiplier))) + ' UGX';
     resultWrap.classList.add('hidden');
   } else {
     // Result known
@@ -1343,11 +1350,11 @@ function showResultCard(bet, round) {
   wrap.classList.remove('hidden');
   wrap.innerHTML = `
     <div class="result-card ${won ? 'win' : 'loss'}">
-      <div class="result-emoji">${won ? 'ðŸ†' : 'ðŸ’”'}</div>
+      <div class="result-emoji">${won ? '🏆' : '💔'}</div>
       <div class="result-title">${won ? 'YOU WON!' : 'NOT THIS TIME'}</div>
       <div class="result-detail">
         ${won
-          ? 'Payout: <strong>' + ugx(bet.payout) + '</strong> Â· Multiplier Ã—' + bet.multiplier
+          ? 'Payout: <strong>' + ugx(bet.payout) + '</strong> · Multiplier ×' + bet.multiplier
           : 'You bet ' + ugx(bet.stake) + ' on ' + bet.direction
         }
       </div>
@@ -1382,9 +1389,9 @@ function toggleBetPanel(canBet, phase) {
   }
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  BET PLACEMENT
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 function selectDir(dir) {
   if (!S.round || S.round.phase !== 'BETTING' || S.myBet) return;
   S.selectedDir = dir;
@@ -1409,7 +1416,7 @@ document.getElementById('stake-input').addEventListener('input', e => {
 function updatePotential() {
   const win = Math.round(S.stake * S.multiplier);
   document.getElementById('potential-win').textContent =
-    S.stake >= 500 ? 'Potential win: ' + ugxShort(win) + ' UGX' : 'Potential win: â€”';
+    S.stake >= 500 ? 'Potential win: ' + ugxShort(win) + ' UGX' : 'Potential win: —';
 }
 
 function updateSubmitBtn() {
@@ -1428,7 +1435,7 @@ function updateSubmitBtn() {
     btn.textContent = 'INSUFFICIENT BALANCE';
   } else {
     btn.className = 'bet-submit ready';
-    btn.textContent = 'LOCK IN: ' + S.selectedDir + ' Â· ' + ugxShort(S.stake) + ' UGX';
+    btn.textContent = 'LOCK IN: ' + S.selectedDir + ' · ' + ugxShort(S.stake) + ' UGX';
   }
 }
 
@@ -1437,7 +1444,7 @@ async function submitBet() {
   if (!S.selectedDir) { toast('Select ABOVE or BELOW', 'error'); return; }
   if (S.stake < 500) { toast('Minimum stake is 500 UGX', 'error'); return; }
   if (S.stake > 50000) { toast('Maximum stake is 50,000 UGX', 'error'); return; }
-  if (S.stake > S.balance) { toast('Insufficient balance â€” deposit first', 'error'); return; }
+  if (S.stake > S.balance) { toast('Insufficient balance — deposit first', 'error'); return; }
   if (!S.round || S.round.phase !== 'BETTING') { toast('Betting is closed', 'error'); return; }
 
   S.betSubmitting = true;
@@ -1455,33 +1462,33 @@ async function submitBet() {
       S.balance = res.data.new_balance;
       S.myBet = res.data.bet;
       updateBalanceUI();
-      toast('âœ… Bet locked! ' + ugxShort(S.stake) + ' on ' + S.selectedDir, 'success');
+      toast('✅ Bet locked! ' + ugxShort(S.stake) + ' on ' + S.selectedDir, 'success');
 
       // Show locked card
       document.getElementById('bet-card').classList.add('hidden');
       const lc = document.getElementById('bet-locked-card');
       lc.classList.remove('hidden');
       const dirEl = document.getElementById('locked-dir-display');
-      dirEl.textContent = (S.selectedDir === 'ABOVE' ? 'â–² ' : 'â–¼ ') + S.selectedDir;
+      dirEl.textContent = (S.selectedDir === 'ABOVE' ? '▲ ' : '▼ ') + S.selectedDir;
       dirEl.className = 'bet-locked-dir ' + S.selectedDir.toLowerCase();
       document.getElementById('locked-meta-display').textContent =
-        'Stake: ' + ugxShort(S.stake) + ' UGX Â· Potential: ' + ugxShort(res.data.potential_payout) + ' UGX';
+        'Stake: ' + ugxShort(S.stake) + ' UGX · Potential: ' + ugxShort(res.data.potential_payout) + ' UGX';
     } else {
       toast(res.error || 'Failed to place bet', 'error');
       btn.className = 'bet-submit ready';
-      btn.textContent = 'LOCK IN: ' + S.selectedDir + ' Â· ' + ugxShort(S.stake) + ' UGX';
+      btn.textContent = 'LOCK IN: ' + S.selectedDir + ' · ' + ugxShort(S.stake) + ' UGX';
     }
   } catch {
-    toast('Network error â€” try again', 'error');
+    toast('Network error — try again', 'error');
     updateSubmitBtn();
   } finally {
     S.betSubmitting = false;
   }
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  LEADERBOARD
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 function renderLeaderboard(list) {
   const el = document.getElementById('lb-list');
   const label = document.getElementById('lb-round-label');
@@ -1499,15 +1506,15 @@ function renderLeaderboard(list) {
       <div class="lb-item${isYou ? ' is-you' : ''}">
         <span class="lb-rank">${i + 1}</span>
         <span class="lb-name">${name}${isYou ? ' (you)' : ''}</span>
-        <span class="lb-dir ${b.direction.toLowerCase()}">${b.direction === 'ABOVE' ? 'â–²' : 'â–¼'}</span>
+        <span class="lb-dir ${b.direction.toLowerCase()}">${b.direction === 'ABOVE' ? '▲' : '▼'}</span>
         <span class="lb-stake">${ugxShort(b.stake)}</span>
       </div>`;
   }).join('');
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  WALLET
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 const UGX_PER_USD = 3700;
 let S_currency = 'UGX';
 
@@ -1553,7 +1560,7 @@ function renderActivationBanner(activated, kycStatus) {
     NONE: { bg: 'rgba(240,180,41,.06)', border: 'rgba(240,180,41,.3)', color: 'var(--gold)',
       text: 'Submit National ID to unlock withdrawals.', btn: 'VERIFY NOW' },
     PENDING: { bg: 'rgba(56,189,248,.06)', border: 'rgba(56,189,248,.3)', color: 'var(--blue)',
-      text: 'Your ID is under review. Withdrawals unlock once approved (1â€“24hrs).', btn: null },
+      text: 'Your ID is under review. Withdrawals unlock once approved (1–24hrs).', btn: null },
     REJECTED: { bg: 'rgba(244,63,94,.06)', border: 'rgba(244,63,94,.3)', color: 'var(--red)',
       text: 'ID verification rejected. Please resubmit.', btn: 'RESUBMIT' },
   };
@@ -1561,7 +1568,7 @@ function renderActivationBanner(activated, kycStatus) {
   el.style.cssText = `display:block;padding:12px 14px;border:1px solid ${b.border};background:${b.bg};`;
   el.innerHTML = `
     <div style="font-family:var(--mono);font-size:10px;color:${b.color};letter-spacing:1px;margin-bottom:6px">
-      ${kycStatus === 'NONE' ? 'ðŸ”’ WITHDRAWALS LOCKED' : kycStatus === 'PENDING' ? 'â³ UNDER REVIEW' : 'âŒ REJECTED'}
+      ${kycStatus === 'NONE' ? '🔒 WITHDRAWALS LOCKED' : kycStatus === 'PENDING' ? '⏳ UNDER REVIEW' : '❌ REJECTED'}
     </div>
     <div style="font-family:var(--body);font-size:13px;color:var(--text2);line-height:1.4">${b.text}</div>
     ${b.btn ? `<button onclick="openKYC()" style="margin-top:10px;padding:8px 18px;background:${b.color};color:#000;border:none;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:1px;cursor:pointer">${b.btn}</button>` : ''}
@@ -1599,7 +1606,7 @@ async function submitKYC() {
       body: JSON.stringify({ full_legal_name, national_id_number, date_of_birth })
     });
     if (res.ok) {
-      toast('ID submitted! Review takes 1â€“24 hours.', 'success');
+      toast('ID submitted! Review takes 1–24 hours.', 'success');
       S.kycStatus = 'PENDING';
       renderActivationBanner(false, 'PENDING');
       closeKYC();
@@ -1613,7 +1620,7 @@ async function submitKYC() {
 function openWithdraw() {
   if (!S.isActivated) {
     if (S.kycStatus === 'PENDING') {
-      toast('Your ID is under review. Check back in 1â€“24 hours.', 'info'); return;
+      toast('Your ID is under review. Check back in 1–24 hours.', 'info'); return;
     }
     openKYC(); return;
   }
@@ -1640,19 +1647,19 @@ async function loadWallet() {
 function renderTransactions() {
   const el = document.getElementById('txn-list');
   if (!S.transactions.length) { el.innerHTML = '<div class="lb-empty">NO TRANSACTIONS YET</div>'; return; }
-  const icons = { DEPOSIT:'â†“', WITHDRAWAL:'â†‘', STAKE:'ðŸŽ¯', PAYOUT:'ðŸ†', REFERRAL_BONUS:'ðŸŽ', REGISTRATION_FEE:'ðŸ”‘', ADMIN_CUT:'ðŸ›' };
+  const icons = { DEPOSIT:'↓', WITHDRAWAL:'↑', STAKE:'🎯', PAYOUT:'🏆', REFERRAL_BONUS:'🎁', REGISTRATION_FEE:'🔑', ADMIN_CUT:'🏛' };
   const credits = ['DEPOSIT','PAYOUT','REFERRAL_BONUS'];
   el.innerHTML = S.transactions.map(t => {
     const isCredit = credits.includes(t.type);
     const d = new Date(t.created_at);
     return `
       <div class="txn-item">
-        <span class="txn-icon">${icons[t.type] || 'â€¢'}</span>
+        <span class="txn-icon">${icons[t.type] || '•'}</span>
         <div class="txn-info">
           <div class="txn-type">${t.type.replace('_',' ')}</div>
           <div class="txn-time">${d.toLocaleDateString()} ${d.toLocaleTimeString()}</div>
         </div>
-        <span class="txn-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : 'âˆ’'}${ugxShort(t.amount)}</span>
+        <span class="txn-amount ${isCredit ? 'credit' : 'debit'}">${isCredit ? '+' : '−'}${ugxShort(t.amount)}</span>
       </div>`;
   }).join('');
 }
@@ -1671,9 +1678,9 @@ function copyRef() {
   });
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  HISTORY
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 function renderHistory() {
   const el = document.getElementById('hist-list');
   if (!S.betHistory.length) { el.innerHTML = '<div class="hist-empty">NO HISTORY YET</div>'; return; }
@@ -1686,7 +1693,7 @@ function renderHistory() {
       <div class="hist-details">
         <div class="hist-detail">
           <div class="hist-detail-label">DIRECTION</div>
-          <div class="hist-detail-val ${h.direction.toLowerCase()}">${h.direction === 'ABOVE' ? 'â–² ' : 'â–¼ '}${h.direction}</div>
+          <div class="hist-detail-val ${h.direction.toLowerCase()}">${h.direction === 'ABOVE' ? '▲ ' : '▼ '}${h.direction}</div>
         </div>
         <div class="hist-detail">
           <div class="hist-detail-label">STAKE</div>
@@ -1700,9 +1707,9 @@ function renderHistory() {
     </div>`).join('');
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  DEPOSIT / WITHDRAW MODAL
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 function openModal(mode) {
   S.modalMode = mode;
   const isDeposit = mode === 'deposit';
@@ -1730,14 +1737,14 @@ async function handleModal() {
 
   if (!amount || amount < 1000) { toast('Minimum 1,000 UGX', 'error'); return; }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  CURRENCY TOGGLE (UGX / USD)
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  ACTIVATION / KYC
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 
   if (!phone) { toast('Enter phone number', 'error'); return; }
 
@@ -1746,7 +1753,9 @@ async function handleModal() {
   btn.textContent = 'PROCESSING...';
 
   try {
-    const endpoint = S.modalMode === 'deposit' ? SUPABASE_FUNCTIONS_URL + '/cryptobeat-deposit' : SUPABASE_FUNCTIONS_URL + '/cryptobeat-withdraw';
+    const endpoint = S.modalMode === 'deposit'
+      ? SUPABASE_FUNCTIONS_URL + '/cryptobeat-deposit'
+      : SUPABASE_FUNCTIONS_URL + '/cryptobeat-withdraw';
     const res = await api(endpoint, {
       method: 'POST',
       body: JSON.stringify({ amount, phone, network })
@@ -1770,9 +1779,9 @@ async function handleModal() {
   }
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  WIN OVERLAY
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 let _winShown = false;
 function showWin(payout) {
   if (_winShown) return;
@@ -1809,9 +1818,9 @@ function spawnConfetti() {
   }
 }
 
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 //  INIT
-// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// ══════════════════════════════
 (async function init() {
   // Set max DOB = today minus 18 years (age gate on registration form)
   const maxDob = new Date();
@@ -1839,7 +1848,7 @@ function spawnConfetti() {
         return;
       }
     } catch {}
-    // Token invalid â€” clear
+    // Token invalid — clear
     localStorage.removeItem('cb_token');
     S.token = null;
   }
@@ -1847,6 +1856,3 @@ function spawnConfetti() {
 </script>
 </body>
 </html>
-
-
-
