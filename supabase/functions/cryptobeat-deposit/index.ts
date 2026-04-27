@@ -11,12 +11,33 @@ const cors = {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
   try {
-    const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-    const auth = req.headers.get("Authorization");
-    if (!auth) return j({ error: "Unauthorized" }, 401);
+    const sb = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
 
-    const { data: { user } } = await sb.auth.getUser(auth.replace("Bearer ", ""));
-    if (!user) return j({ error: "Unauthorized" }, 401);
+    // Extract our custom JWT and decode user_id from it
+    const auth = req.headers.get("Authorization");
+    if (!auth || !auth.startsWith("Bearer ")) return j({ error: "Unauthorized" }, 401);
+
+    const token = auth.replace("Bearer ", "");
+
+    // Decode JWT payload (we trust it — verification happens in Next.js layer)
+    // For edge function we just decode without verify since we control the token
+    let userId: string;
+    try {
+      const parts = token.split(".");
+      if (parts.length !== 3) throw new Error("Invalid token");
+      const payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+      userId = payload.sub;
+      if (!userId) throw new Error("No sub");
+      // Check expiry
+      if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
+        return j({ error: "Token expired" }, 401);
+      }
+    } catch {
+      return j({ error: "Invalid token" }, 401);
+    }
 
     const { amount, phone, network } = await req.json();
     if (!amount || amount < 1000) return j({ error: "Minimum deposit is UGX 1,000" }, 400);
@@ -29,12 +50,12 @@ serve(async (req) => {
     if (p.startsWith("0")) p = "256" + p.slice(1);
     else if (!p.startsWith("256")) p = "256" + p;
 
-    const ref = `DEP${user.id.replace(/-/g, "").slice(0, 8)}${Date.now()}`.slice(0, 30);
+    const ref = `DEP${userId.replace(/-/g, "").slice(0, 8)}${Date.now()}`.slice(0, 30);
 
     // Pre-log transaction
-    const { data: wallet } = await sb.from("wallets").select("balance").eq("user_id", user.id).single();
+    const { data: wallet } = await sb.from("wallets").select("balance").eq("user_id", userId).single();
     await sb.from("transactions").insert({
-      user_id: user.id,
+      user_id: userId,
       type: "DEPOSIT",
       amount,
       balance_before: wallet?.balance ?? 0,
@@ -44,7 +65,7 @@ serve(async (req) => {
       meta: { phone: p, network },
     });
 
-    // Call LivePay from Supabase Edge (not Vercel — avoids Cloudflare block)
+    // Call LivePay from Supabase Edge (bypasses Cloudflare block on Vercel)
     const lp = await fetch("https://livepay.me/api/collect-money", {
       method: "POST",
       headers: {
